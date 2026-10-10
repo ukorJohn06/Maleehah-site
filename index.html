@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080607">
+
+<title>Coming Up Roses — For My Mal</title>
+
+<style>
+:root {
+    --bg: #080607;
+    --red: #a20d25;
+    --bright: #f14a64;
+    --cream: #f7e8e8;
+    --muted: #c3aeb2;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--cream);
+    font-family: Georgia, "Times New Roman", serif;
+    overflow-x: hidden;
+}
+
+button {
+    font: inherit;
+    cursor: pointer;
+}
+
+.grain {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 5;
+    opacity: .07;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.6'/%3E%3C/svg%3E");
+}
+
+#petals {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 4;
+}
+
+.petal {
+    position: absolute;
+    top: -10vh;
+    color: #b10f2d;
+    opacity: .7;
+    animation: fall linear infinite;
+    filter: drop-shadow(0 0 8px #6e0718);
+}
+
+@keyframes fall {
+    to {
+        transform: translate3d(var(--drift), 115vh, 0) rotate(600deg);
+        opacity: .05;
+    }
+}
+
+section {
+    position: relative;
+    padding: 100px 22px;
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wrap {
+    width: min(1050px, 100%);
+    margin: auto;
+}
+
+.eyebrow {
+    text-transform: uppercase;
+    letter-spacing: .32em;
+    font: 11px/1.7 Arial, sans-serif;
+    color: #f06a7e;
+}
+
+h1, h2, p {
+    margin-top: 0;
+}
+
+h1 {
+    font-size: clamp(3.4rem, 10vw, 8rem);
+    font-weight: 400;
+    line-height: .9;
+    letter-spacing: -.06em;
+    margin: 25px 0;
+}
+
+h2 {
+    font-size: clamp(2.2rem, 5vw, 4.5rem);
+    font-weight: 400;
+    line-height: 1.02;
+    letter-spacing: -.04em;
+}
+
+p {
+    font-size: clamp(1.05rem, 2vw, 1.25rem);
+    line-height: 1.9;
+    color: #e0cdd1;
+}
+
+.small {
+    font: 12px/1.8 Arial, sans-serif;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    border: 1px solid #8e2438;
+    background: linear-gradient(135deg, #8d1026, #3a0912);
+    color: #fff0f1;
+    padding: 16px 23px;
+    border-radius: 2px;
+    letter-spacing: .08em;
+    font: 11px Arial, sans-serif;
+    text-transform: uppercase;
+    transition: .3s;
+    box-shadow: 0 0 30px #720d251a;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 30px #a20d2555;
+}
+
+#intro {
+    min-height: 100svh;
+    text-align: center;
+    overflow: hidden;
+    background: radial-gradient(
+        ellipse at 50% 55%,
+        #3b0814 0%,
+        #16080d 35%,
+        #080607 70%
+    );
+}
+
+#intro .wrap {
+    position: relative;
+    z-index: 1;
+}
+
+.rose-mark {
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    display: inline-block;
+    filter: drop-shadow(0 0 25px #d02045);
+    animation: pulse 4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    50% {
+        transform: scale(1.08);
+        filter: drop-shadow(0 0 40px #f02d52);
+    }
+}
+
+.intro-line {
+    font-size: clamp(1rem, 2vw, 1.4rem);
+    font-style: italic;
+    color: #e8c9cf;
+}
+
+#intro h1 {
+    font-size: clamp(4rem, 12vw, 9rem);
+}
+
+#intro h1 span {
+    display: block;
+    color: #f04a66;
+    font-style: italic;
+    font-size: .48em;
+    letter-spacing: .01em;
+    margin-top: 18px;
+}
+
+.divider {
+    width: 70px;
+    height: 1px;
+    background: #a92a42;
+    margin: 28px auto;
+}
+
+.reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity .9s ease, transform .9s ease;
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: none;
+}
+
+.two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(35px, 7vw, 100px);
+    align-items: center;
+}
+
+.photo-frame {
+    padding: 10px;
+    border: 1px solid #642031;
+    background: linear-gradient(145deg, #1c0b10, #080607);
+    box-shadow: 0 20px 70px #0009;
+    position: relative;
+}
+
+.photo-frame:before {
+    content: "";
+    position: absolute;
+    inset: -7px;
+    border: 1px solid #b52b48;
+    opacity: .45;
+    pointer-events: none;
+}
+
+.photo-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 650px;
+    object-fit: contain;
+    background: #12090c;
+}
+
+.caption {
+    margin: 16px 0 0;
+    text-align: center;
+    font-style: italic;
+    color: #d98c9a;
+    font-size: 1rem;
+}
+
+#letter {
+    background: linear-gradient(
+        180deg,
+        #0b0709,
+        #17070d 50%,
+        #0b0709
+    );
+}
+
+.letter-card {
+    max-width: 790px;
+    margin: auto;
+    padding: clamp(28px, 6vw, 65px);
+    border: 1px solid #4d1724;
+    background: #0b0809ed;
+    box-shadow: 0 25px 90px #0008;
+    position: relative;
+}
+
+.letter-card:before {
+    content: "";
+    position: absolute;
+    inset: 9px;
+    border: 1px solid #4a1722;
+    pointer-events: none;
+}
+
+.letter-card p {
+    position: relative;
+}
+
+.signature {
+    font-size: 1.6rem;
+    font-style: italic;
+    color: #ff8395;
+}
+
+#final {
+    min-height: 100svh;
+    text-align: center;
+    background: radial-gradient(
+        ellipse at 50% 55%,
+        #3a0714 0%,
+        #13070b 38%,
+        #050405 75%
+    );
+    overflow: hidden;
+}
+
+#final .wrap {
+    position: relative;
+    z-index: 1;
+}
+
+.hidden-message {
+    display: none;
+    animation: arrive 1.6s ease both;
+}
+
+.hidden-message.show {
+    display: block;
+}
+
+@keyframes arrive {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+        filter: blur(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+        filter: blur(0);
+    }
+}
+
+.final-phrase {
+    font-size: clamp(2.8rem, 8vw, 7rem);
+    line-height: 1;
+    letter-spacing: -.055em;
+    color: #ff536f;
+    text-shadow: 0 0 30px #a20d2577;
+    margin: 30px 0;
+}
+
+.final-sub {
+    font-style: italic;
+    color: #e7c5cb;
+}
+
+footer {
+    padding: 28px 20px;
+    text-align: center;
+    color: #8d7479;
+    font: 10px Arial, sans-serif;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    border-top: 1px solid #241018;
+}
+
+@media (max-width: 760px) {
+    section {
+        padding: 75px 22px;
+    }
+
+    .two-col {
+        grid-template-columns: 1fr;
+    }
+
+    .photo-frame {
+        max-width: 500px;
+        margin: auto;
+    }
+
+    #our-story .two-col .text {
+        order: -1;
+    }
+
+    .letter-card {
+        padding: 28px 23px;
+    }
+
+    .letter-card:before {
+        inset: 6px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *:before, *:after {
+        scroll-behavior: auto !important;
+        animation: none !important;
+        transition: none !important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Background effects -->
+<div class="grain"></div>
+<div id="petals" aria-hidden="true"></div>
+
+<!-- MUSIC -->
+<audio id="ourSong" autoplay loop preload="auto">
+    <source src="coming-up-roses.mp3" type="audio/mpeg">
+</audio>
+
+<!-- INTRO -->
+<section id="intro">
+    <div class="wrap">
+
+        <div class="rose-mark" aria-hidden="true">🌹</div>
+
+        <div class="eyebrow">
+            A little something, made just for you
+        </div>
+
+        <h1>
+            For my
+            <span>Mal.</span>
+        </h1>
+
+        <div class="divider"></div>
+
+        <p class="intro-line">
+            For the girl who makes ordinary moments feel like something special.
+        </p>
+
+        <button class="btn" id="openGift">
+            Open your gift, my love <span>♡</span>
+        </button>
+
+        <p class="small" style="margin-top:22px">
+            11 · 10 · 2026 &nbsp; / &nbsp; Our first month
+        </p>
+
+    </div>
+</section>
+
+<!-- OUR STORY -->
+<section id="our-story">
+    <div class="wrap two-col reveal">
+
+        <div class="photo-frame">
+            <img src="our-collage.jpg" alt="Our memories together">
+
+            <div class="caption">
+                Our little world, even from miles apart.
+            </div>
+        </div>
+
+        <div class="text">
+
+            <div class="eyebrow">
+                Nigeria × UK · One little story
+            </div>
+
+            <h2>
+                Out of all the people in this world, I'm glad it's you.
+            </h2>
+
+            <p>
+                We might be miles apart, but somehow you've found a way
+                to feel close. And I love that one of the things that
+                brought us closer was something as simple as talking
+                about songs and discovering we have the same taste in music.
+            </p>
+
+            <p>
+                It's a little thing, maybe, but it's one of those moments
+                I want to remember.
+            </p>
+
+        </div>
+    </div>
+</section>
+
+<!-- MALEЕHAH -->
+<section id="her">
+    <div class="wrap two-col reveal">
+
+        <div class="text">
+
+            <div class="eyebrow">
+                To the prettiest girl
+            </div>
+
+            <h2>
+                My beautiful Maleehah.
+            </h2>
+
+            <p>
+                Your hair is genuinely so pretty, and honestly, you're
+                pretty in every way. But what makes you special to me
+                isn't something I can fit into a list. It's the little
+                things, the conversations, the laughs, and the way
+                getting to know you keeps giving me reasons to smile.
+            </p>
+
+            <p>
+                I'm happy I get to call you my Mal. ❤️
+            </p>
+
+        </div>
+
+        <div class="photo-frame">
+            <img src="mal-photo.jpg" alt="Maleehah">
+
+            <div class="caption">
+                The girl behind my favourite smile.
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- LOVE LETTER -->
+<section id="letter">
+    <div class="wrap reveal">
+
+        <div class="eyebrow" style="text-align:center">
+            A letter for you
+        </div>
+
+        <h2 style="text-align:center;margin-bottom:35px">
+            One month with my Mal.
+        </h2>
+
+        <div class="letter-card">
+
+            <p>My Mal,</p>
+
+            <p>Happy one month, baby. ❤️</p>
+
+            <p>
+                It's only been a month, but I'm genuinely happy that
+                this is something we get to share. I love getting to
+                know you, hearing from you, and finding those little
+                things about us that make me think, "How cute is that?"
+                Like when we talk about music and keep discovering that
+                we love the same songs. I don't know why, but moments
+                like that mean a lot to me.
+            </p>
+
+            <p>
+                And baby, you are so pretty. Your hair, your face,
+                your whole vibe — there's just something about you
+                that I adore. But beyond how beautiful you are, I'm
+                excited about all the other little things I'll get
+                to learn about you as we keep going.
+            </p>
+
+            <p>
+                I know there's distance between us, and I wish I could
+                be there with you for moments like this instead of
+                putting my feelings into a website. But until I can
+                give you a hug in person, I hope this makes you feel
+                a little of the love I'm trying to send your way.
+            </p>
+
+            <p>
+                This is only our first month. We still have so many
+                conversations to have, songs to share, laughs to laugh,
+                and memories to make. I don't need our story to be
+                perfect. I just want us to keep choosing to show up
+                for each other and see where this beautiful beginning
+                takes us.
+            </p>
+
+            <p>
+                Thank you for being my girl, Mal. I'm really glad
+                our paths crossed. ❤️
+            </p>
+
+            <p class="signature">
+                Forever yours,<br>
+                Your Man. 🖤
+            </p>
+
+        </div>
+    </div>
+</section>
+
+<!-- FINAL SURPRISE -->
+<section id="final">
+    <div class="wrap reveal">
+
+        <div class="rose-mark" aria-hidden="true">🌹</div>
+
+        <div class="eyebrow">
+            Before you go...
+        </div>
+
+        <h2>
+            If I had to start this story all over again,
+            <br>
+            <em style="color:#f04a66">
+                I'd still want it to lead me to you.
+            </em>
+        </h2>
+
+        <div class="divider"></div>
+
+        <button class="btn" id="lastThing">
+            One last thing, baby <span>♡</span>
+        </button>
+
+        <div
+            class="hidden-message"
+            id="hiddenMessage"
+            aria-live="polite"
+        >
+
+            <div class="final-phrase">
+                There's only me &amp; you.
+            </div>
+
+            <p class="final-sub">
+                Happy one month, my Mal. ❤️
+            </p>
+
+            <p>
+                There's still so much of our story left to write.
+            </p>
+
+            <p class="signature">
+                Forever yours,<br>
+                Your Man. 🖤🌹
+            </p>
+
+        </div>
+    </div>
+</section>
+
+<footer>
+    Made with love, just for Mal · 11 October 2026
+</footer>
+
+<script>
+// FALLING FLOWERS AND HEARTS
+const petals = document.getElementById('petals');
+
+for (let i = 0; i < 22; i++) {
+    const p = document.createElement('span');
+
+    p.className = 'petal';
+    p.textContent = ['✦', '♥', '❧', '✿'][i % 4];
+
+    p.style.left = Math.random() * 100 + '%';
+    p.style.fontSize = (10 + Math.random() * 18) + 'px';
+    p.style.animationDuration = (12 + Math.random() * 18) + 's';
+    p.style.animationDelay = (-Math.random() * 25) + 's';
+
+    p.style.setProperty(
+        '--drift',
+        (Math.random() * 160 - 80) + 'px'
+    );
+
+    petals.appendChild(p);
+}
+
+// REVEAL SECTIONS WHEN THEY ENTER THE SCREEN
+const observer = new IntersectionObserver(
+    entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    },
+    { threshold: 0.12 }
+);
+
+document.querySelectorAll('.reveal').forEach(element => {
+    observer.observe(element);
+});
+
+// MUSIC: START FROM THE BEGINNING
+const song = document.getElementById('ourSong');
+
+song.currentTime = 0;
+
+function playOurSong() {
+    if (song.paused) {
+        song.play().catch(() => {
+            // Some browsers require a user interaction first.
+        });
+    }
+}
+
+// Attempt autoplay as soon as the page loads.
+window.addEventListener('load', () => {
+    song.currentTime = 0;
+    playOurSong();
+});
+
+// If autoplay is blocked, the first interaction starts the song.
+function startSongOnInteraction() {
+    if (song.paused) {
+        song.currentTime = 0;
+        playOurSong();
+    }
+
+    document.removeEventListener(
+        'pointerdown',
+        startSongOnInteraction
+    );
+}
+
+document.addEventListener(
+    'pointerdown',
+    startSongOnInteraction
+);
+
+// OPEN THE GIFT
+document.getElementById('openGift').addEventListener('click', () => {
+    playOurSong();
+
+    document.getElementById('our-story').scrollIntoView({
+        behavior: 'smooth'
+    });
+});
+
+// REVEAL THE FINAL MESSAGE
+document.getElementById('lastThing').addEventListener(
+    'click',
+    function () {
+        document.getElementById('hiddenMessage').classList.add('show');
+
+        this.style.display = 'none';
+
+        document.getElementById('hiddenMessage').scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+        });
+    }
+);
+</script>
+
+</body>
+</html>
